@@ -2,6 +2,8 @@ package com.master.application.controller;
 
 import java.util.List;
 
+import com.master.application.entity.User;
+import com.master.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,13 +44,15 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private UserRepository userRepository;
+
   @GetMapping
   public List<UserModel> getUsers() {
     return userService.getUsers();
   }
 
   @GetMapping("/{id}")
-  @PreAuthorize("hasRole('ADMIN')")
   public UserModel getUserById(@PathVariable Long id) {
     return userService.getUser(id);
   }
@@ -60,7 +65,9 @@ public class UserController {
         new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
     final String token = jwtTokenUtil.generateToken(authentication);
-    return ResponseEntity.ok(new AuthToken(token));
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    User user = userRepository.findByUsername(userDetails.getUsername());
+    return ResponseEntity.ok(new AuthToken(user.getId(),token,user.getUsername(),user.getType()));
   }
 
   @PostMapping(value = "/register")

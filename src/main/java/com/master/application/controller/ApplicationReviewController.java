@@ -37,6 +37,7 @@ public class ApplicationReviewController {
   
   @PostMapping
   public ApplicationReviewModel createApplicationReview(@RequestBody ApplicationReviewModel applicationReviewModel) {
+    System.out.println(applicationReviewModel);
     return applicationReviewService.createApplicationReview(applicationReviewModel);
   }
   

@@ -12,13 +12,13 @@ public class ApplicationReviewModel {
   public ApplicationReviewModel() {
 	    
   }
-  
+
   public ApplicationReviewModel(ApplicationReview applicationReview) {
-	  this.id=applicationReview.getId();
-	  this.application_id=applicationReview.getApplication_id();
-    this.secretary_id = applicationReview.getSecretary_id();
+    this.id=applicationReview.getId();
+    this.application_id=applicationReview.getApplication().getId();
+    this.secretary_id = applicationReview.getSecretary().getId();
     this.accepted = applicationReview.isAccepted();
-    
+
   }
   public boolean isAccepted() {
     return accepted;
@@ -52,6 +52,13 @@ public void setId(Long id) {
 	this.id = id;
 }
 
-
- 
+  @Override
+  public String toString() {
+    return "ApplicationReviewModel{" +
+            "id=" + id +
+            ", application_id=" + application_id +
+            ", secretary_id=" + secretary_id +
+            ", accepted=" + accepted +
+            '}';
+  }
 }
