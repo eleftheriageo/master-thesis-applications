@@ -1,5 +1,6 @@
 # master-thesis-applications
-
+This is the schema of postgreSQL we developed and we need in order to run our project.
+At first you need to put this code in your Dbeaver program and also you have to copy and paste it to your postgreSQL serveer you have at your computer.
 --
 -- PostgreSQL database dump
 --
